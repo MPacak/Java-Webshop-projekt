@@ -22,7 +22,7 @@ public class ProductCategoryAdminController {
     @GetMapping("/admin/products")
     public String getAllProductsForAdmin(Model model) {
        model.addAttribute("products", productService.getAllProducts());
-        return "/admin/products";
+        return "admin/products";
     }
     @GetMapping("/admin/products/add")
     public String addProduct(Model model) {

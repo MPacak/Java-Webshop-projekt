@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -24,23 +25,18 @@ public class SecurityBeans {
     public SecurityFilterChain filterChain(HttpSecurity http, CustomLoginSuccessHandler successHandler) throws Exception {
         final String SUCCESSURL = "/webshop/products";
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.contentSecurityPolicy(csp ->
                         csp.policyDirectives("frame-ancestors 'self'")))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/images/**","/webshop/register","/css/**", "/js/**", "/webshop/products",
-                                "/webshop/login", "/webshop/order/cart", "/webshop/order/add/**", "webshop/order/remove/**", "webshop/order/update")
+                        .requestMatchers("images/**","webshop/register","css/**", "js/**", "webshop/products",
+                                "webshop/login", "webshop/order/cart", "webshop/order/add/**", "webshop/order/remove/**", "webshop/order/update")
                         .permitAll()
-                        .requestMatchers("/h2/**", "/webshop/order/**")
+                        .requestMatchers("h2/**", "webshop/order/**")
                         .hasAnyRole("USER", "ADMIN")
-                        .requestMatchers("/webshop/admin/**").hasRole("ADMIN")
+                        .requestMatchers("webshop/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-             /*   .formLogin(form -> form
-                        .loginPage("/webshop/login")
-                        .defaultSuccessUrl(SUCCESSURL, true)
-                        .permitAll()
-                )*/
                 .formLogin(login -> login
                         .loginPage("/webshop/login")
                         .successHandler(successHandler)

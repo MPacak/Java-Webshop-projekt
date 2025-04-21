@@ -19,7 +19,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             HttpServletResponse response,
             Authentication authentication) throws IOException {
 
-        // Get the roles of the logged-in user
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
         // Loop through the roles and redirect accordingly

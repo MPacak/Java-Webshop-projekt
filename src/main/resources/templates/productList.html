@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layouts/userLayout :: html(content=~{::div.content})}">
+<head>
+  <title>Product List</title>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="content">
+  <form th:action="@{/webshop/products}" method="get" class="bg-white p-4 rounded-md shadow flex flex-wrap gap-4 items-end">
+    <div class="flex-1 min-w-[200px]">
+      <label for="productName" class="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+      <input type="text" id="productName" name="productName"
+             th:value="${param.productName}"
+             placeholder="Search name..."
+             class="w-full border border-gray-300 rounded-md p-2 focus:ring-indigo-500 focus:border-indigo-500"/>
+    </div>
+
+    <div class="flex-1 min-w-[200px]">
+      <label for="categoryId" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+      <select id="categoryId" name="categoryId"
+              class="w-full border border-gray-300 rounded-md p-2 bg-white focus:ring-indigo-500 focus:border-indigo-500">
+        <option value="">All Categories</option>
+        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}"
+                th:selected="${param.categoryId} == ${cat.id}"></option>
+      </select>
+    </div>
+
+    <div>
+      <button type="submit"
+              class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+        Filter
+      </button>
+    </div>
+    <div>
+      <a th:href="@{/webshop/products}"
+         class="inline-block bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400 transition">
+        Reset
+      </a>
+    </div>
+  </form>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  <div th:each="product : ${products}" class="bg-white rounded-lg shadow p-4 flex flex-col items-center text-center">
+    <img th:src="@{'/images/' + ${product.imagePath}}" alt="product image"
+         class="w-32 h-32 object-cover mb-4 rounded-md shadow-md" />
+    <h2 class="font-semibold text-lg mb-1" th:text="${product.name}">Product Name</h2>
+    <p class="text-gray-500 text-sm mb-2" th:text="${product.description}">Description</p>
+    <p class="text-green-600 font-bold mb-2" th:text="${product.price} + ' €'">Price</p>
+    <p class="text-sm text-gray-400 italic mb-4" th:text="${product.categoryName}">Category</p>
+    <a th:href="@{/webshop/order/add/{id}(id=${product.id})}"
+       class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">
+      Add to Cart
+    </a>
+
+  </div>
+</div>
+</div>
+</body>
+</html>

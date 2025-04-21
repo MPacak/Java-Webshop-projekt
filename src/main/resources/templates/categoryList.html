@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/userLayout :: html(content=~{::div.content})}">
+<head>
+  <title>Categories</title>
+</head>
+<body class="bg-gray-100 p-6">
+<div class="content">
+  <h1 class="text-3xl font-bold text-center mb-8 text-indigo-700">Explore Categories</h1>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div th:each="cat : ${categories}"
+         class="bg-white p-6 rounded-lg shadow-md flex flex-col items-center text-center hover:shadow-xl transition">
+
+      <!-- Icon / Placeholder -->
+      <div class="w-16 h-16 bg-indigo-100 text-indigo-600 flex items-center justify-center rounded-full mb-4 text-2xl font-bold">
+        <span th:text="${cat.name.substring(0,1)}">A</span>
+      </div>
+
+      <!-- Category Name -->
+      <h2 class="text-lg font-semibold text-gray-800 mb-2" th:text="${cat.name}">Category Name</h2>
+
+
+      <a th:href="@{/webshop/products(categoryId=${cat.id})}"
+         class="mt-2 bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 transition">
+        View Products
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/admin-layout :: html(content=~{::div.content})}">
+<head>
+  <title>Admin - Categories</title>
+</head>
+<body>
+<div class="content">
+<div class="mb-4">
+  <a href="/webshop/admin/categories/add"
+     class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+    Add New Category
+  </a>
+</div>
+
+<div class="overflow-x-auto">
+  <table class="min-w-full bg-white rounded shadow">
+    <thead>
+    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+      <th class="py-3 px-6 text-left">ID</th>
+      <th class="py-3 px-6 text-left">Name</th>
+      <th class="py-3 px-6 text-center">Actions</th>
+    </tr>
+    </thead>
+    <tbody class="text-gray-600 text-sm font-light" th:each="cat : ${categories}">
+    <tr class="border-b border-gray-200 hover:bg-gray-100">
+      <td class="py-3 px-6" th:text="${cat.id}">1</td>
+      <td class="py-3 px-6" th:text="${cat.name}">Category Name</td>
+      <td class="py-3 px-6 text-center">
+        <a th:href="@{/webshop/admin/categories/update(id=${cat.id})}"
+           class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 mr-2">
+          Edit
+        </a>
+
+        <form th:action="@{/webshop/admin/categories/delete}" method="post"
+              onsubmit="return confirm('Are you sure you want to delete this category?');"
+              style="display:inline">
+          <input type="hidden" name="id" th:value="${cat.id}" />
+          <button type="submit"
+                  class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">
+            Delete
+          </button>
+        </form>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</body>
+</html>

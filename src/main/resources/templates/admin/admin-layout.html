@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Panel</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<!-- Admin Navigation -->
+<nav class="bg-blue-700 text-white p-4 shadow-md">
+  <div class="container mx-auto">
+    <ul class="flex space-x-6">
+      <li><a href="/webshop/admin/products" class="hover:text-blue-200 transition duration-150">Products</a></li>
+      <li><a href="/webshop/admin/categories" class="hover:text-blue-200 transition duration-150">Categories</a></li>
+      <li><a href="/webshop/admin/orderLogs" class="hover:text-blue-200 transition duration-150">Order logs</a></li>
+      <li><a href="/webshop/admin/logs" class="hover:text-blue-200 transition duration-150">Logs</a></li>
+      <li><a href="/webshop/admin/products" class="hover:text-blue-200 transition duration-150">Back to Shop</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container mx-auto pt-6">
+  <div th:replace="${content}">
+    Content goes here
+  </div>
+</div>
+</body>
+</html>

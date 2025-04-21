@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{admin/admin-layout :: html(content=~{::div.content})}">
+<head>
+    <meta charset="UTF-8">
+    <title>User Login Logs</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-6">
+<div class="content">
+<div class="w-full max-w-5xl bg-white p-6 rounded-lg shadow-md">
+    <h1 class="text-3xl font-semibold text-center text-gray-800 mb-6">User Login Logs</h1>
+
+    <div class="overflow-x-auto">
+        <table class="min-w-full border border-gray-200">
+            <thead class="bg-blue-100 text-gray-700 text-sm uppercase tracking-wider">
+            <tr>
+                <th class="px-4 py-3 border">User ID</th>
+                <th class="px-4 py-3 border">Username</th>
+                <th class="px-4 py-3 border">IP Address</th>
+                <th class="px-4 py-3 border">Login Time</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="log : ${logs}" class="odd:bg-white even:bg-gray-50 hover:bg-gray-100 transition-all">
+                <td class="px-4 py-2 border text-center" th:text="${log.userId}">1</td>
+                <td class="px-4 py-2 border text-center" th:text="${log.username}">admin</td>
+                <td class="px-4 py-2 border text-center" th:text="${log.ipAddress}">192.168.0.1</td>
+                <td class="px-4 py-2 border text-center" th:text="${#temporals.format(log.loginTime, 'yyyy-MM-dd HH:mm:ss')}">2025-04-16 14:30:00</td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(logs)}">
+                <td colspan="4" class="text-center py-4 text-gray-500">No login logs available.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</div>
+</body>
+</html>

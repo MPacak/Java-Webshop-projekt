@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" th:replace="~{layouts/userLayout :: html(content=~{::div.content})}">
+<head>
+  <title>Your Cart</title>
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+<div class="content">
+<div class="max-w-6xl mx-auto bg-white p-6 rounded-lg shadow">
+  <h1 class="text-3xl font-bold mb-6 text-center">Your Cart</h1>
+
+  <div th:if="${order.orderItems.isEmpty()}" class="text-center text-gray-500">
+    Your cart is empty. <a th:href="@{/webshop/products}" class="text-blue-500 underline">Continue Shopping</a>
+  </div>
+
+  <div th:unless="${order.orderItems.isEmpty()}">
+    <table class="w-full border-collapse mb-6">
+      <thead class="bg-blue-100 text-gray-700">
+      <tr>
+        <th class="p-3 border">Image</th>
+        <th class="p-3 border">Product</th>
+        <th class="p-3 border">Price</th>
+        <th class="p-3 border">Quantity</th>
+        <th class="p-3 border">Subtotal</th>
+        <th class="p-3 border text-center">Remove</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="item : ${order.orderItems}" class="hover:bg-gray-50">
+        <td class="border p-3">
+          <img th:src="@{${item.imagePath}}" class="h-16 w-16 object-cover" />
+        </td>
+        <td class="border p-3" th:text="${item.productName}"></td>
+        <td class="border p-3" th:text="${item.purchasePrice + ' €'}"></td>
+        <td class="border p-3">
+          <input type="number" min="1" class="quantity-input w-16 px-2 py-1 border rounded text-center"
+                 th:value="${item.quantity}" th:data-product-id="${item.productId}" />
+        </td>
+        <td class="border p-3"
+            th:text="${item.subTotal + ' €'}"
+            th:attr="data-subtotal-id=${item.productId}">
+        </td>
+        <td class="border p-3 text-center">
+          <form th:action="@{/webshop/order/remove/{id}(id=${item.productId})}" method="post">
+            <button type="submit" class="text-red-500 hover:underline">Remove</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+
+    <div class="flex justify-between items-center">
+      <a th:href="@{/webshop/products}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300">
+        ← Back to Products
+      </a>
+
+      <div class="text-lg font-semibold">
+        Total: <span id="cart-total" th:text="${order.total + ' €'}"></span>
+      </div>
+
+      <a th:href="@{/webshop/order/checkout}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+        Checkout
+      </a>
+      <form th:action="@{/webshop/order/remove}" method="post">
+        <div th:each="method : ${order}" class="mb-2">
+          <input type="hidden" name="order items" th:value="${order.getOrderItems()}"  />
+        </div>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+          Remove all products from cart
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.quantity-input').forEach(input => {
+    input.addEventListener('change', function () {
+      const productId = this.dataset.productId;
+      const quantity = this.value;
+
+      fetch('/webshop/order/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId, quantity })
+      }).then(res => res.json())
+              .then(data => {
+                if (data.error) {
+                  alert("Something went wrong: " + data.error);
+                  return;
+                }
+                document.getElementById('cart-total').innerText = data.total.toFixed(2) + ' €';
+                const subtotalCell = document.querySelector(`[data-subtotal-id="${data.productId}"]`);
+                if (subtotalCell) {
+                  subtotalCell.innerText = data.subtotal.toFixed(2) + ' €';
+                }
+              })
+              .catch(err => {
+                console.error('AJAX update error:', err);
+                alert('Failed to update cart item. Please try again.');
+              });
+    });
+  });
+</script>
+</div>
+</body>
+</html>

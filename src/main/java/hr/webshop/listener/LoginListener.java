@@ -30,8 +30,6 @@ public class LoginListener implements ApplicationListener<AuthenticationSuccessE
                 .currentRequestAttributes()).getRequest();
         String ip = request.getRemoteAddr();
 
-        System.out.println(" User logged in: " + username + " from IP: " + ip);
-
         HttpSession session = request.getSession(false);
         if (session != null) {
             OrderDto order = (OrderDto) session.getAttribute("order");

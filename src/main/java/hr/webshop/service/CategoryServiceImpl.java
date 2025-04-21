@@ -6,10 +6,8 @@ import hr.webshop.iservice.CategoryService;
 import hr.webshop.mapper.AppMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.findAll()
                 .stream()
                 .map(appMapper::toCategoryDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

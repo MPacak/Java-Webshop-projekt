@@ -2,19 +2,15 @@ package hr.webshop.service;
 
 import hr.webshop.dto.CategoryDto;
 import hr.webshop.dto.ProductDto;
-
-
 import hr.webshop.irepository.CategoryRepository;
 import hr.webshop.irepository.ProductRepository;
 import hr.webshop.iservice.ProductService;
 import hr.webshop.mapper.AppMapper;
 import hr.webshop.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {

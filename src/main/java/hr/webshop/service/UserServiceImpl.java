@@ -22,10 +22,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserDto register(UserDto userDto) {
+    public void register(UserDto userDto) {
         User user = appMapper.toUserEntity(userDto);
         user.setPasswordHash(passwordEncoder.encode(userDto.getPassword()));
-        return appMapper.toUserDto(userRepository.save(user));
+        appMapper.toUserDto(userRepository.save(user));
     }
 
     @Override

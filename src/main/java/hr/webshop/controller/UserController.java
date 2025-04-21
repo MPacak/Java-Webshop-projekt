@@ -1,9 +1,7 @@
 package hr.webshop.controller;
 
-import hr.webshop.form.UserForm;
 import hr.webshop.dto.UserDto;
 import hr.webshop.iservice.UserService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

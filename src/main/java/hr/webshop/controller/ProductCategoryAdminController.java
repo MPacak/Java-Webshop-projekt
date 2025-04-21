@@ -18,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductCategoryAdminController {
     private ProductService productService;
     private final CategoryService categoryService;
-
+    private static final String SESSIONCATEGORIES ="categories";
+    private static final String REDIRECTPRODUCTS ="redirect:/webshop/admin/products";
+    private static final String REDIRECTCATEGORIES ="redirect:/webshop/admin/categories";
     @GetMapping("/admin/products")
     public String getAllProductsForAdmin(Model model) {
        model.addAttribute("products", productService.getAllProducts());
@@ -27,7 +29,7 @@ public class ProductCategoryAdminController {
     @GetMapping("/admin/products/add")
     public String addProduct(Model model) {
         model.addAttribute("productForm", new ProductDto());
-        model.addAttribute("categories", productService.getAllCategories());
+        model.addAttribute(SESSIONCATEGORIES, productService.getAllCategories());
         return "admin/productsAdd";
     }
 
@@ -35,18 +37,18 @@ public class ProductCategoryAdminController {
     public String saveProduct(@Valid @ModelAttribute("productForm") ProductDto dto,
                               BindingResult bindingResult, Model model,  @RequestParam("image") MultipartFile image) {
         if (bindingResult.hasErrors() && image.isEmpty()) {
-            model.addAttribute("categories", productService.getAllCategories());
+            model.addAttribute(SESSIONCATEGORIES, productService.getAllCategories());
             return "admin/productsAdd";
         }
         dto.setImagePath(image.getOriginalFilename());
         productService.save(dto);
-        return "redirect:/webshop/admin/products";
+        return REDIRECTPRODUCTS;
     }
 
     @GetMapping("/admin/products/update")
     public String updateProduct(@RequestParam("id") Integer id, Model model) {
         model.addAttribute("productForm", productService.getById(id));
-        model.addAttribute("categories", productService.getAllCategories());
+        model.addAttribute(SESSIONCATEGORIES, productService.getAllCategories());
         return "admin/productEdit";
     }
 
@@ -60,23 +62,23 @@ public class ProductCategoryAdminController {
             dto.setImagePath(image.getOriginalFilename());
         }
         if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", productService.getAllCategories());
+            model.addAttribute(SESSIONCATEGORIES, productService.getAllCategories());
             return "admin/productEdit";
         }
         productService.update(dto);
-        return "redirect:/webshop/admin/products";
+        return REDIRECTPRODUCTS;
     }
 
 
     @PostMapping("/admin/products/delete")
     public String deleteProduct(@RequestParam("id") Integer id) {
         productService.delete(id);
-        return "redirect:/webshop/admin/products";
+        return REDIRECTPRODUCTS;
     }
 
     @GetMapping("/admin/categories")
     public String getAllCategories(Model model) {
-        model.addAttribute("categories", categoryService.getAll());
+        model.addAttribute(SESSIONCATEGORIES, categoryService.getAll());
         return "admin/categories";
     }
 
@@ -93,7 +95,7 @@ public class ProductCategoryAdminController {
             return "admin/categoryAdd";
         }
         categoryService.save(categoryDto);
-        return "redirect:/webshop/admin/categories";
+        return REDIRECTCATEGORIES;
     }
 
     @GetMapping("/admin/categories/update")
@@ -109,12 +111,12 @@ public class ProductCategoryAdminController {
             return "admin/categoryEdit";
         }
         categoryService.update(dto);
-        return "redirect:/webshop/admin/categories";
+        return REDIRECTCATEGORIES;
     }
 
     @PostMapping("/admin/categories/delete")
     public String deleteCategory(@RequestParam("id") Integer id) {
         categoryService.delete(id);
-        return "redirect:/webshop/admin/categories";
+        return REDIRECTCATEGORIES;
     }
 }

@@ -7,6 +7,5 @@ import java.time.Instant;
 import java.util.List;
 
 public interface OrderLogRepository extends JpaRepository<OrderLog, Integer>, OrderLogRepositoryCustom {
-    List<OrderLog> findByUsername(String username);
     List<OrderLog> findByTimestampBetween(Instant start, Instant end);
 }

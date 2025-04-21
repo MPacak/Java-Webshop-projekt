@@ -1,6 +1,5 @@
 package hr.webshop.dto;
 
-import hr.webshop.model.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;

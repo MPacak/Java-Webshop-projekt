@@ -22,6 +22,7 @@ public class OrderController {
     private OrderService orderService;
     private PaymentMethodService paymentMethodService;
     private static final String SESSIONORDER = "order";
+    private static final String REDIRECTCART ="redirect:/webshop/order/cart";
     @GetMapping("/order/add/{productId}")
     public String addToCart(@PathVariable Integer productId, HttpSession session) {
         OrderDto order = (OrderDto) session.getAttribute(SESSIONORDER);
@@ -34,7 +35,7 @@ public class OrderController {
         orderService.addProductToOrder(order, product);
         session.setAttribute(SESSIONORDER, order);
 
-        return "redirect:/webshop/order/cart";
+        return REDIRECTCART;
     }
     @GetMapping("/order/cart")
     public String showCart(HttpSession session, Model model) {
@@ -46,7 +47,7 @@ public class OrderController {
             orderService.recalculateTotal(order);
         }
 
-        model.addAttribute("order", order);
+        model.addAttribute(SESSIONORDER, order);
         return "order/cart";
     }
     @PostMapping("/order/update")
@@ -67,14 +68,14 @@ public class OrderController {
     }
     @GetMapping("/order/checkout")
     public String showCheckoutPage(HttpSession session, Model model, Principal principal) {
-        OrderDto order = (OrderDto) session.getAttribute("order");
+        OrderDto order = (OrderDto) session.getAttribute(SESSIONORDER);
 
         if (order == null || order.getOrderItems().isEmpty()) {
-            return "redirect:/webshop/order/cart";
+            return REDIRECTCART;
         }
         UserDto user = userService.getUserByUsername(principal.getName());
         List<PaymentMethod> paymentMethods = paymentMethodService.getAll();
-        model.addAttribute("order", order);
+        model.addAttribute(SESSIONORDER, order);
         model.addAttribute("user", user);
         model.addAttribute("paymentMethods", paymentMethods);
 
@@ -83,10 +84,10 @@ public class OrderController {
     @PostMapping("/order/confirm")
     public String confirmOrder(@RequestParam Integer paymentMethodId,HttpSession session,Principal principal) {
 
-        OrderDto order = (OrderDto) session.getAttribute("order");
+        OrderDto order = (OrderDto) session.getAttribute(SESSIONORDER);
 
         if (order == null || order.getOrderItems().isEmpty()) {
-            return "redirect:/webshop/order/cart";
+            return REDIRECTCART;
         }
         if (order.getUserId() == null) {
             UserDto user = userService.getUserByUsername(principal.getName());
@@ -110,13 +111,13 @@ public class OrderController {
     public String removeFromCart(@PathVariable Integer productId, HttpSession session) {
         OrderDto order = (OrderDto) session.getAttribute(SESSIONORDER);
         orderService.removeProductFromOrder(order,productId);
-        return "redirect:/webshop/order/cart";
+        return REDIRECTCART;
     }
     @PostMapping("/order/remove")
     public String removeAllFromCart(HttpSession session) {
         OrderDto order = (OrderDto) session.getAttribute(SESSIONORDER);
         orderService.removeAllProductsFromOrder(order);
-        return "redirect:/webshop/order/cart";
+        return REDIRECTCART;
     }
     @GetMapping("/order/myorders")
     public String showUserOrders(Model model, Principal principal) {
@@ -130,7 +131,5 @@ public class OrderController {
         model.addAttribute("orderdetail", order);
         return "order/myOrderDetails";
     }
-//check if any of the quantites are 0! it cannot be zero or put validation!!! and bindresult!!!
-
 
 }

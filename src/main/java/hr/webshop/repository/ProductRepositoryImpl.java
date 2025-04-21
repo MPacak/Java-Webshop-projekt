@@ -4,7 +4,6 @@ import hr.webshop.irepository.ProductRepositoryCustom;
 import hr.webshop.model.Product;
 
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Parameter;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;

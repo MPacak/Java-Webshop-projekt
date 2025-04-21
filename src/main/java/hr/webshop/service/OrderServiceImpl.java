@@ -6,38 +6,26 @@ import hr.webshop.dto.OrderItemsDto;
 import hr.webshop.dto.ProductDto;
 import hr.webshop.dto.ProductQuantityDto;
 import hr.webshop.irepository.OrderRepository;
-import hr.webshop.irepository.ProductRepository;
 import hr.webshop.irepository.UserRepository;
 import hr.webshop.iservice.OrderService;
-import hr.webshop.iservice.PaymentMethodService;
 import hr.webshop.mapper.AppMapper;
 import hr.webshop.model.Order;
 import hr.webshop.model.OrderItem;
 import hr.webshop.model.User;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.servlet.http.HttpSession;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
     private final UserRepository userRepository;
-    private  ProductRepository productRepository;
-    private PaymentMethodService paymentMethodService;
     private OrderRepository orderRepository;
     private AppMapper appMapper;
-
-    @Override
-    public OrderDto getOrCreateOrder(HttpSession session) {
-        return null;
-    }
 
     @Override
     public void addProductToOrder(OrderDto order, ProductDto product) {
@@ -110,7 +98,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findByUser(user)
                 .stream()
                 .map(order -> appMapper.toOrderDto(order))
-                .collect(Collectors.toList());
+                .toList();
     }
     @Override
     public void saveOrder(OrderDto orderDto) {

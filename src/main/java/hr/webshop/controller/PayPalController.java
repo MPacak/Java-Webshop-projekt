@@ -31,7 +31,6 @@ public class PayPalController {
         if (completed) {
             OrderDto order = (OrderDto) session.getAttribute("order");
             orderService.saveOrder(orderService.finalizeOrder(order));
-           // session.removeAttribute("order");
             return "redirect:/webshop/order/confirmation";
         }
         return "redirect:/webshop/order/checkout";

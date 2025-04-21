@@ -23,14 +23,12 @@ import java.util.List;
 public class OrderConfirmationLoggingFilter implements Filter {
 
     private final OrderLogService orderLogService;
-    private final ObjectMapper objectMapper;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
         HttpServletRequest req = (HttpServletRequest) request;
-        HttpServletResponse res = (HttpServletResponse) response;
 
         String path = req.getRequestURI();
         String method = req.getMethod();

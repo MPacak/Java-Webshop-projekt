@@ -60,7 +60,7 @@ public interface AppMapper {
     Category toCategoryEntity(CategoryDto dto);
     //orderlog
     OrderLogDto toOrderLogDto(OrderLog log);
-    OrderLog toOrderLogEntity(OrderLogDto dto);
+
 
 
 }

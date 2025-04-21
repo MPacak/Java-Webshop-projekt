@@ -23,7 +23,7 @@ private final UserRepository userRepository;
 
     @Override
     public void logLogin(Integer id, String ip, LocalDateTime time) {
-        User user = userRepository.findById(id).get();
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         logingRepository.save(new LoginLogs(user, ip, time));
     }
 

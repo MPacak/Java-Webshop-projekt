@@ -3,8 +3,10 @@ package hr.webshop.dto;
 import jakarta.validation.constraints.Min;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class OrderItemsDto {
+public class OrderItemsDto implements Serializable {
     private Integer id;
 
     private Integer productId;

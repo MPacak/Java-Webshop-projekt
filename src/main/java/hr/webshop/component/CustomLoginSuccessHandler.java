@@ -21,7 +21,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
 
         Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-        // Loop through the roles and redirect accordingly
         for (GrantedAuthority authority : authorities) {
             String role = authority.getAuthority();
             if (role.equals("ROLE_ADMIN")) {
@@ -33,7 +32,6 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
             }
         }
 
-        // fallback
         response.sendRedirect("/");
     }
 }

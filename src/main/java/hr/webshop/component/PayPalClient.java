@@ -9,10 +9,7 @@ import org.springframework.stereotype.Component;
 @Getter
 @Component
 public class PayPalClient {
-    /**
-     * -- GETTER --
-     * expose the initialized client
-     */
+
     private final PayPalHttpClient httpClient;
 
     public PayPalClient(

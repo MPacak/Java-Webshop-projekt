@@ -25,9 +25,7 @@ public class PayPalService {
         this.returnUrl    = returnUrl;
         this.cancelUrl    = cancelUrl;
     }
-    /**
-     * 1) Create a PayPal order and return the `approve` link.
-     */
+
     public String createOrder(BigDecimal total) throws IOException {
         OrderRequest orderRequest = new OrderRequest()
                 .checkoutPaymentIntent("CAPTURE")
@@ -57,9 +55,6 @@ public class PayPalService {
                 .orElseThrow(() -> new IllegalStateException("No approve link"));
     }
 
-    /**
-     * 2) Capture payment after buyer approval.
-     */
     public boolean captureOrder(String orderId) throws IOException {
         OrdersCaptureRequest request = new OrdersCaptureRequest(orderId);
         request.requestBody(new OrderRequest()); // can be empty
